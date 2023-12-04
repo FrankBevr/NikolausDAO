@@ -6,7 +6,8 @@
     "dependencies": {
         "@polkadot/api": "10.11.1",
         "@polkadot/api-contract": "10.11.1",
-        "commander": "^11.1.0"
+        "commander": "^11.1.0",
+        "@google-cloud/storage": "^7.7.0"
     },
     "devDependencies": {},
     "scripts": {

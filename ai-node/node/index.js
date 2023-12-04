@@ -7,6 +7,7 @@ const CONTRACT_METADATA = require("../../SmartContract/NikolausDao/target/ink/ni
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const { Storage } = require('@google-cloud/storage');
 
 console.log("NikolausDAO AI Node - Node.JS is running!");
 
@@ -96,7 +97,10 @@ async function main() {
     console.log("Contract address: " + opts.contract);
     console.log("Node URL: " + opts.url);
 
-    if(!fs.existsSync(opts.directory)) {
+    console.log("Initializing Cloud Storage client ...");
+    const storage = new Storage();
+
+    if (!fs.existsSync(opts.directory)) {
         fs.mkdirSync(opts.directory);
     }
 
@@ -146,11 +150,11 @@ async function main() {
             ) === undefined
         );
 
-        if(ungiftedMembers.length === 0) {
+        if (ungiftedMembers.length === 0) {
             console.log("No members to gift, waiting 1 seconds...");
             await new Promise(resolve => setTimeout(resolve, 1000));
         } else {
-            for(const member of ungiftedMembers) {
+            for (const member of ungiftedMembers) {
                 const model = await generateModel(member.prompt);
                 const message = await generateMessage(member.prompt);
 
@@ -161,6 +165,16 @@ async function main() {
                 );
                 console.log("Generated message: " + message);
                 console.log("Saved .obj file to " + tempFileName);
+
+                storage.bucket("pdc-public-data.bokov.me").upload(
+                    opts.directory + "/" + tempFileName + ".obj",
+                    {
+                        destination: "models/" + tempFileName + ".obj"
+                    }
+                );
+
+                const storageUrl = `https://storage.googleapis.com/pdc-public-data.bokov.me/models/${tempFileName}.obj`;
+                console.log(storageUrl);
             }
         }
 
