@@ -17,9 +17,9 @@ mod nikolaus_dao {
         #[ink(constructor)]
         pub fn new() -> Self {
             Self {
-                prompt: vec![],
-                members: vec![],
-                gifts: vec![],
+                prompt: Vec::new(),
+                members: Vec::new(),
+                gifts: Vec::new(),
                 leader: [0u8; 32].into(),
             }
         }
@@ -40,8 +40,17 @@ mod nikolaus_dao {
         }
 
         #[ink(message)]
-        pub fn add_leader(&mut self) {
-            self.leader = self.env().caller();
+        pub fn init_leader(&mut self) {
+            if self.env().caller() == [0u8; 32].into() {
+                self.leader = self.env().caller();
+            }
+        }
+
+        #[ink(message)]
+        pub fn change_leader(&mut self, new_leader: AccountId) {
+            if self.env().caller() == self.leader {
+                self.leader = new_leader;
+            }
         }
     }
 }
