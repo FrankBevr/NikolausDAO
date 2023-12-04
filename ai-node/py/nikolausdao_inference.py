@@ -66,8 +66,7 @@ def generate():
 
     for i, latent in enumerate(latents):
         t = decode_latent_mesh(xm, latent).tri_mesh()
-        with open(f"output/{request_id}_{i}.ply", "w") as f:
-            t.write_ply(f)
+        t.write_ply(f"output/{request_id}_{i}.ply")
 
     json_response = {
         "request_id": request_id,
