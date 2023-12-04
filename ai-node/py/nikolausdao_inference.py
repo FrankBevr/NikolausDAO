@@ -73,18 +73,10 @@ def message():
         temperature=0.9,
     )
     generated_text = text_generator_output[0]["generated_text"]
-    print(generated_text)
     generated_text = generated_text.replace(text_generator_context, "").strip()
-    print("---")
-    print(generated_text)
-
-    if not generated_text.startswith("Message:"):
-        return jsonify(
-            {"error": "Failed to generate message, does not start with 'Message:'"}
-        )
 
     generated_lines = generated_text.split("\n")
-    final_text = generated_lines[0].replace("Message:", "").strip()
+    final_text = generated_lines[1].replace("Message:", "").strip()
 
     json_response = {
         "prompt": prompt,
