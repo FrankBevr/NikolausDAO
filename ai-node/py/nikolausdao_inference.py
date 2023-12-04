@@ -49,7 +49,7 @@ def generate():
 
     request_id = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
 
-    print(f"[{request_id}] Generating {batch_size} samples for prompt [{prompt}] ...")
+    print(f"[/generate] [{request_id}] Generating {batch_size} samples for prompt [{prompt}] ...")
 
     latents = sample_latents(
         batch_size=batch_size,
@@ -68,7 +68,7 @@ def generate():
     )
 
     for i, latent in enumerate(latents):
-        print(f"[{request_id}] Writing sample {i} ...")
+        print(f"[/generate] [{request_id}] Writing sample {i} ...")
         t = decode_latent_mesh(xm, latent).tri_mesh()
         with open(f"output/{request_id}_{i}.obj", "w") as f:
             t.write_obj(f)
@@ -77,8 +77,8 @@ def generate():
         "request_id": request_id,
         "prompt": prompt,
         "num_samples": batch_size,
-        "ply_files": [
-            f"http://localhost:{api_port}/download/{request_id}_{i}.obj"
+        "files": [
+            f"http://127.0.0.1:{api_port}/download/{request_id}_{i}.obj"
             for i in range(batch_size)
         ],
     }
@@ -88,4 +88,5 @@ def generate():
 
 @api_app.get("/download/<path:path>")
 def send_ply(path):
+    print(f"[/download] Sending {path}")
     return api_app.send_static_file(f"output/{path}")
