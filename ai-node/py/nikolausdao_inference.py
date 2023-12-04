@@ -11,6 +11,7 @@ import os
 
 batch_size = 4
 guidance_scale = 15.0
+inference_steps = 16
 api_port = 5000
 
 if torch.cuda.is_available():
@@ -58,7 +59,7 @@ def generate():
         clip_denoised=True,
         use_fp16=True,
         use_karras=True,
-        karras_steps=64,
+        karras_steps=inference_steps,
         sigma_min=1e-3,
         sigma_max=160,
         s_churn=0,
