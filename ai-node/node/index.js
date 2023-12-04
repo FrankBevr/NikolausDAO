@@ -166,7 +166,7 @@ async function main() {
                 console.log("Generated message: " + message);
                 console.log("Saved .obj file to " + tempFileName);
 
-                storage.bucket("pdc-public-data.bokov.me").upload(
+                await storage.bucket("pdc-public-data.bokov.me").upload(
                     opts.directory + "/" + tempFileName + ".obj",
                     {
                         destination: "models/" + tempFileName + ".obj"
@@ -174,11 +174,18 @@ async function main() {
                 );
 
                 const storageUrl = `https://storage.googleapis.com/pdc-public-data.bokov.me/models/${tempFileName}.obj`;
-                console.log(storageUrl);
+
+                await contract.tx.pushNodeGift(
+                    {
+                        gasLimit,
+                        storageDepositLimit
+                    },
+                    member.accountId,
+                    storageUrl,
+                    message
+                ).signAndSend(user);
             }
         }
-
-        break;
 
     }
 
