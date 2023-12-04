@@ -1,0 +1,40 @@
+#+COLUMNS: %50ITEM(Task) %7TODO %14CLOCKSUM(Clock)
+
+* Organisation
+
+** Skratch Idea [0/4]
+*** scratch a idea [6/6]
+  - [X] add dao to 3D
+  - [X] come up with imp dao
+  - [X] write SoftwareDesig.md
+  - [X] share Hackmd link in group for first feedback
+  - [X] recieve Feedback
+  - [X] process feedback (imp is not a well known english word)
+*** Group up [2/2]
+  - [X] gather with people
+  - [X] join forces with botond :rocket:
+
+*** Reshape Idea [9/9]
+  - [X] add AI to 3D Printend DAO Idea
+  - [X] try stable diffusion dreamfusion
+  - [X] rechange to shap-e
+  - [X] test it with shark
+  - [X] test it with wild string of goblin something
+  - [X] create new Sotfware-Design
+  - [X] discuss it, adjust it
+  - [X] gater feedback on Neverland
+  - [X] sleep
+*** Adjust Idea [3/3]
+  - [X] exchange adjustments of Idea
+    - [X] security issue of centralised node (Botond)
+    - [X] incentive ai model (Frank)
+  - [X] Add concept of staked based decentralised to NikolausDAO
+  - [X] wrote down rough steps on pen and paper of next hours
+
+** First steps [0/0]
+*** Set Up Github  [3/3]
+  - [X] Frank commit
+  - [X] Botond commit
+  - [X] add docs
+    - [X] add SoftwareDesign.md
+    - [X] add Organisation.org
