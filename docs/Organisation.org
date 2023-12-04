@@ -1,8 +1,7 @@
 #+COLUMNS: %50ITEM(Task) %7TODO %14CLOCKSUM(Clock)
 
 * Organisation
-
-** Skratch Idea [0/4]
+** Skratch Idea [6/6]
 *** scratch a idea [6/6]
   - [X] add dao to 3D
   - [X] come up with imp dao
@@ -13,7 +12,6 @@
 *** Group up [2/2]
   - [X] gather with people
   - [X] join forces with botond :rocket:
-
 *** Reshape Idea [9/9]
   - [X] add AI to 3D Printend DAO Idea
   - [X] try stable diffusion dreamfusion
@@ -31,28 +29,73 @@
   - [X] Add concept of staked based decentralised to NikolausDAO
   - [X] wrote down rough steps on pen and paper of next hours
 
-** First steps [0/0]
+** First steps [3/3]
 *** Set Up Github  [3/3]
   - [X] Frank commit
   - [X] Botond commit
   - [X] add docs
     - [X] add SoftwareDesign.md
     - [X] add Organisation.org
-
-*** Set Up AI-Node (Botond) [2/3]
+*** Set Up AI-Node & Thingies (Botond) [7/7]
 - [X] write README.md
 - [X] setup node application
-- [-] setup python application
+- [X] setup python application
   - [X] downloadn deps
-  - [ ] try cloud ai  thingies
-    - [ ] ...
-
-*** Walktrhuh Smartcontract (Frank/Botond) [0/8]
-- [ ] create SmartContract
-- [ ] build SmartContract
-- [ ] deploy SmartContract locally
-- [ ] interact with ContractsUI
-- [ ] inteact with cli
-- [ ] write polkadot js node application
-- [ ] get value
-- [ ] flip value
+  - [X] try cloud ai  thingies
+- [X] write python part
+  - [X] set up rest api
+  - [X] generate_model()
+  - [X] add message function
+- [X] setup frontend
+  - [X] init bulma
+  - [X] create buttons
+  - [X] skratch out hero
+- [X] get feedback from gabo
+  - [X] tinker around polka js
+- [X] go into contracts
+*** Walktrhuh Smartcontract (Frank/Botond) [8/8]
+- [X] create SmartContract
+- [X] build SmartContract
+- [X] deploy SmartContract locally
+- [X] interact with ContractsUI
+- [X] inteact with cli
+- [X] write polkadot js node application
+- [X] get value (problem, postponed)
+- [X] flip value (problem postponed)
+*** Eugen Amazing Workshop < 3  (Frank) [12/12]
+- [X] show a git repo
+- [X] initialise git repo
+- [X] build contract
+- [X] deploy contract
+- [X] install local node
+- [X] go to `https://idea.gear-tech.io/` deploy it
+- [X] rm local node, install non nightly local nod
+- [X] understand contract
+- [X] change a Pong to Frank::Active
+- [X] intialise connection, install gear sdk
+- [X] debug
+- [X] listen to Event
+*** Contract V1 (Frank & Botond) [6/6]
+- [X] create NikolausDAO
+- [X] add Members
+- [X] add Prompts
+- [X] add Gifts
+- [X] define setters and getter
+- [X] start tinkering around ai node smart contract implentation
+*** NodeJS (Frank & Botond) [7/7]
+- [X] set up Backend
+- [X] install polkaJS
+- [X] get accounts
+- [X] get blockhashes
+- [X] add readContract function
+- [X] debug readContract funtion
+- [X] flipper function callable
+*** Contract V2 (Frank & Botond) [8/8]
+- [X] add nodes
+- [X] add pending
+- [X] add accepting
+- [X] add rejected
+- [X] chunk data into Gifts structs
+- [X] add push_gifts
+- [X] debug correctly
+- [X] test via contracts ui
