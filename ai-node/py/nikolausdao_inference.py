@@ -9,7 +9,7 @@ from shap_e.util.notebooks import decode_latent_mesh
 import datetime
 import os
 
-batch_size = 4
+batch_size = 1
 guidance_scale = 15.0
 inference_steps = 16
 api_port = 5000
@@ -49,6 +49,8 @@ def generate():
 
     request_id = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
 
+    print(f"[{request_id}] Generating {batch_size} samples for prompt [{prompt}] ...")
+
     latents = sample_latents(
         batch_size=batch_size,
         model=model,
@@ -66,6 +68,7 @@ def generate():
     )
 
     for i, latent in enumerate(latents):
+        print(f"[{request_id}] Writing sample {i} ...")
         t = decode_latent_mesh(xm, latent).tri_mesh()
         with open(f"output/{request_id}_{i}.obj", "w") as f:
             t.write_obj(f)
@@ -85,4 +88,4 @@ def generate():
 
 @api_app.get("/download/<path:path>")
 def send_ply(path):
-    return api_app.send_static_file(path)
+    return api_app.send_static_file(f"output/{path}")
