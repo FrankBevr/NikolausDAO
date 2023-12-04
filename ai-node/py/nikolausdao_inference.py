@@ -73,6 +73,7 @@ def message():
         temperature=0.9,
     )
     generated_text = text_generator_output[0]["generated_text"]
+    print(generated_text)
     generated_text = generated_text.replace(text_generator_context, "").strip()
 
     if not generated_text.startswith("Message:"):
