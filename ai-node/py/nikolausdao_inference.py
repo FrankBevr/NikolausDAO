@@ -67,7 +67,11 @@ def message():
 
     text_generator_input = text_generator_context + prompt + "\nMessage:"
 
-    text_generator_output = text_generator(text_generator_input)
+    text_generator_output = text_generator(
+        text_generator_input,
+        max_new_tokens=100,
+        temperature=0.9,
+    )
     generated_text = text_generator_output[0]["generated_text"]
     generated_text = generated_text.replace(text_generator_context, "").strip()
 
