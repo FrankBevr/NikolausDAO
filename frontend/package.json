@@ -1,0 +1,16 @@
+{
+    "name": "@nikolausdao/frontend",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "esbuild": "^0.19.8"
+    },
+    "scripts": {
+        "build": "esbuild src/index.jsx --bundle --minify --sourcemap --jsx=automatic --outfile=public/index.js",
+        "serve": "esbuild src/index.jsx --bundle --minify --sourcemap --jsx=automatic --outfile=public/index.js --watch --serve=0.0.0.0:8000 --servedir=public"
+    }
+}

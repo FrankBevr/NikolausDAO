@@ -10,10 +10,19 @@ else
 fi
 
 # Clone the Shap-E repository
+if [[ ! -d shap-e ]]; then
 git clone https://github.com/openai/shap-e.git
 
-# Install Shap-E dependencies
-$PIP install --break-system-packages -e .
+    # Change directory to Shap-E
+    pushd shap-e
+
+    # Install Shap-E dependencies
+    $PIP install --break-system-packages -e .
+
+    # Change directory to the parent directory
+    popd
+
+fi
 
 # Install NikolausDAO dependencies
 $PIP install --break-system-packages -r requirements.txt
