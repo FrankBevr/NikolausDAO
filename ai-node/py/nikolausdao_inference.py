@@ -1,5 +1,5 @@
 import torch
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 
 from shap_e.diffusion.sample import sample_latents
 from shap_e.diffusion.gaussian_diffusion import diffusion_from_config
@@ -88,6 +88,6 @@ def generate():
 
 @api_app.get("/download/<path:path>")
 def send_ply(path):
-    abs_path = os.path.abspath(f"output/{path}")
-    print(f"[/download] Sending {abs_path}")
-    return api_app.send_static_file(abs_path)
+    abs_path = os.path.abspath(f"output")
+    print(f"[/download] Sending {path}")
+    return send_from_directory(abs_path, path)
