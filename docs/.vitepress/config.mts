@@ -16,7 +16,8 @@ export default defineConfig({
         items: [
           { text: 'Software-Design', link: '/Software-Design' },
           { text: 'Proposal', link: '/proposal' },
-          { text: 'Judging-Criteria', link: '/Judging-Criteria' }
+          { text: 'Judging-Criteria', link: '/Judging-Criteria' },
+          { text: 'Members', link: '/members' }
         ]
       }
     ],
