@@ -69,12 +69,14 @@ def message():
 
     text_generator_output = text_generator(
         text_generator_input,
-        max_new_tokens=100,
+        max_new_tokens=32,
         temperature=0.9,
     )
     generated_text = text_generator_output[0]["generated_text"]
     print(generated_text)
     generated_text = generated_text.replace(text_generator_context, "").strip()
+    print("---")
+    print(generated_text)
 
     if not generated_text.startswith("Message:"):
         return jsonify(
