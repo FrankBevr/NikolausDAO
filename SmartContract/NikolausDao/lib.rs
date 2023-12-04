@@ -7,8 +7,8 @@ mod nikolaus_dao {
 
     #[ink(storage)]
     pub struct NikolausDao {
-        prompt: Vec<String>,
         members: Vec<AccountId>,
+        prompt: Vec<String>,
         gifts: Vec<String>,
         leader: AccountId,
     }
@@ -17,8 +17,8 @@ mod nikolaus_dao {
         #[ink(constructor)]
         pub fn new() -> Self {
             Self {
-                prompt: Vec::new(),
                 members: Vec::new(),
+                prompt: Vec::new(),
                 gifts: Vec::new(),
                 leader: [0u8; 32].into(),
             }
@@ -51,6 +51,11 @@ mod nikolaus_dao {
             if self.env().caller() == self.leader {
                 self.leader = new_leader;
             }
+        }
+
+        #[ink(message)]
+        pub fn get_leader(&mut self) -> AccountId {
+            self.leader
         }
     }
 }
