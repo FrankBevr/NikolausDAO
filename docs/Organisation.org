@@ -38,3 +38,21 @@
   - [X] add docs
     - [X] add SoftwareDesign.md
     - [X] add Organisation.org
+
+*** Set Up AI-Node (Botond) [2/3]
+- [X] write README.md
+- [X] setup node application
+- [-] setup python application
+  - [X] downloadn deps
+  - [ ] try cloud ai  thingies
+    - [ ] ...
+
+*** Walktrhuh Smartcontract (Frank/Botond) [0/8]
+- [ ] create SmartContract
+- [ ] build SmartContract
+- [ ] deploy SmartContract locally
+- [ ] interact with ContractsUI
+- [ ] inteact with cli
+- [ ] write polkadot js node application
+- [ ] get value
+- [ ] flip value
