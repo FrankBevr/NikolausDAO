@@ -397,5 +397,30 @@ mod nikolaus_dao {
 
             Ok(())
         }
+        
+        #[ink(message)]
+        pub fn reset_dao(&mut self) -> Result<(), Error> {
+            
+            if self.env().caller() != self.leader {
+                return Err(Error::NotTheLeader);
+            }
+
+            self.members = Vec::new();
+            self.member_delivery_addresses = Vec::new();
+            self.member_prompts = Vec::new();
+            self.member_deposits = Vec::new();
+            self.member_votes = Vec::new();
+            self.member_did_vote = Vec::new();
+            self.member_gifts_to_receive = Vec::new();
+            self.leader = [0u8; 32].into();
+            self.did_init_leader = false;
+            self.pending_nodes = Vec::new();
+            self.accepted_nodes = Vec::new();
+            self.rejected_nodes = Vec::new();
+            self.generated_gifts = Vec::new();
+
+            Ok(())
+
+        }
     }
 }
