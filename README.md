@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://i.ibb.co/XLFJxMt/1cd72787-4570-4233-9a4a-2372f0aa0277.jpg" alt="logo" width="120" height="80" />
+<img src="https://i.ibb.co/b2q81XB/5ccd8ab1-ec3d-4b84-b009-9a57418f7a8d.jpg" alt="logo" height="100" />
 </div>
 
 <h3 align="center">Nikolaus DAO</h3>

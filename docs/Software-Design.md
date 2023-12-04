@@ -16,15 +16,15 @@ Don't have a present for `scrap imps exchange` gathering.
 
 <details>
 <summary>Read More</summary>
-    There is a common tradition in many places on December 6 alias Nicholaus day. </br>
-    It called Trash imping.(literally translated from german)</br> </br> 
-    How does it work?</br> 
-    You buy something funny for a certain defined range of value.</br> 
-    f.e. something funny for around 10 bucks. </br> 
-    You come together with your friends.</br> 
-    Everyone throws his thingy in. </br> 
-    It gets redistrubed. </br> 
-    Some people are happy, some people are sad but everyone had a big fun </br> 
+    There is a common tradition in many places on December 6 alias Nicholaus day. <br/>
+    It called Trash imping.(literally translated from german)<br/> <br/> 
+    How does it work?<br/> 
+    You buy something funny for a certain defined range of value.<br/> 
+    f.e. something funny for around 10 bucks. <br/> 
+    You come together with your friends.<br/> 
+    Everyone throws his thingy in. <br/> 
+    It gets redistrubed. <br/> 
+    Some people are happy, some people are sad but everyone had a big fun <br/> 
     
    Ok now we know whats trash imping.
    
