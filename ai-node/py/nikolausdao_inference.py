@@ -88,5 +88,6 @@ def generate():
 
 @api_app.get("/download/<path:path>")
 def send_ply(path):
-    print(f"[/download] Sending {path}")
-    return api_app.send_static_file(f"output/{path}")
+    abs_path = os.path.abspath(f"output/{path}")
+    print(f"[/download] Sending {abs_path}")
+    return api_app.send_static_file(abs_path)
