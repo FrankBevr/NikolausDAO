@@ -125,8 +125,8 @@ async function main() {
     console.log("Contract created!");
 
     const gasLimit = api.registry.createType("WeightV2", {
-        refTime: new BN("10000000000"),
-        proofSize: new BN("10000000000"),
+        refTime: new BN("2000000000"),
+        proofSize: new BN("200000"),
     });
 
     while (true) {
