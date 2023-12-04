@@ -1,0 +1,3 @@
+[submodule "playground/eugen"]
+	path = playground/eugen
+	url = https://github.com/gear-foundation/dapp-template
