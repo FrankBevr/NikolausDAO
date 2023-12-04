@@ -3,7 +3,11 @@
     "version": "0.0.1",
     "private": true,
     "main": "index.js",
-    "dependencies": {},
+    "dependencies": {
+        "@polkadot/api": "10.11.1",
+        "@polkadot/api-contract": "10.11.1",
+        "commander": "^11.1.0"
+    },
     "devDependencies": {},
     "scripts": {
         "start": "node index.js"
