@@ -6,12 +6,14 @@ from shap_e.diffusion.gaussian_diffusion import diffusion_from_config
 from shap_e.models.download import load_model, load_config
 from shap_e.util.notebooks import decode_latent_mesh
 
+from transformers import pipeline, set_seed
+
 import datetime
 import os
 
 batch_size = 1
 guidance_scale = 15.0
-inference_steps = 16
+inference_steps = 64
 api_port = 5000
 
 if torch.cuda.is_available():
@@ -32,6 +34,9 @@ print("Loaded text300M")
 diffusion = diffusion_from_config(load_config("diffusion"))
 print("Loaded diffusion")
 
+set_seed(datetime.datetime.now().microsecond)
+text_generator = pipeline("text-generation", model="facebook/opt-1.3b", do_sample=True)
+print("Loaded text generator")
 
 if not os.path.exists("output"):
     os.makedirs("output")
@@ -39,17 +44,64 @@ if not os.path.exists("output"):
 
 api_app = Flask(__name__)
 
+text_generator_context = """Below are ideas, and heart warming, nice, festive messages generates for the ideas.
 
-@api_app.get("/generate")
-def generate():
-    prompt = "a shark"
+Idea: a cow
+Message: I sincerely hope you like this cow, happy Nikolaus!
+
+Idea: a dog with a hat
+Message: Come Nikolaus day, and this dog will make your day!
+
+Idea: """
+
+
+@api_app.get("/message")
+def message():
+    prompt = ""
     prompt_query = request.args.get("prompt")
     if prompt_query and len(prompt_query) > 0:
         prompt = prompt_query
 
+    if len(prompt) == 0:
+        return jsonify({"error": "Prompt must not be empty"})
+
+    text_generator_input = text_generator_context + prompt + "\nMessage:"
+
+    text_generator_output = text_generator(text_generator_input)
+    generated_text = text_generator_output[0]["generated_text"]
+    generated_text = generated_text.replace(text_generator_context, "").strip()
+
+    if not generated_text.startswith("Message:"):
+        return jsonify(
+            {"error": "Failed to generate message, does not start with 'Message:'"}
+        )
+
+    generated_lines = generated_text.split("\n")
+    final_text = generated_lines[0].replace("Message:", "").strip()
+
+    json_response = {
+        "prompt": prompt,
+        "message": final_text,
+    }
+
+    return jsonify(json_response)
+
+
+@api_app.get("/generate")
+def generate():
+    prompt = ""
+    prompt_query = request.args.get("prompt")
+    if prompt_query and len(prompt_query) > 0:
+        prompt = prompt_query
+
+    if len(prompt) == 0:
+        return jsonify({"error": "Prompt must not be empty"})
+
     request_id = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
 
-    print(f"[/generate] [{request_id}] Generating {batch_size} samples for prompt [{prompt}] ...")
+    print(
+        f"[/generate] [{request_id}] Generating {batch_size} samples for prompt [{prompt}] ..."
+    )
 
     latents = sample_latents(
         batch_size=batch_size,
