@@ -74,7 +74,7 @@ def generate():
         "prompt": prompt,
         "num_samples": batch_size,
         "ply_files": [
-            f"http://localhost:5000/ply/{request_id}_{i}.ply" for i in range(batch_size)
+            f"http://localhost:{api_port}/ply/{request_id}_{i}.ply" for i in range(batch_size)
         ],
     }
 
