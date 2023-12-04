@@ -5,18 +5,23 @@ mod nikolaus_dao {
     use ink::prelude::string::String;
     use ink::prelude::vec::Vec;
 
-    #[derive(Default)]
     #[ink(storage)]
     pub struct NikolausDao {
         prompt: Vec<String>,
         members: Vec<AccountId>,
         gifts: Vec<String>,
+        leader: AccountId,
     }
 
     impl NikolausDao {
         #[ink(constructor)]
         pub fn new() -> Self {
-            Self::default()
+            Self {
+                prompt: vec![],
+                members: vec![],
+                gifts: vec![],
+                leader: [0u8; 32].into(),
+            }
         }
 
         #[ink(message)]
@@ -32,6 +37,11 @@ mod nikolaus_dao {
         #[ink(message)]
         pub fn add_gift(&mut self, prompt: String) {
             self.gifts.push(prompt)
+        }
+
+        #[ink(message)]
+        pub fn add_leader(&mut self) {
+            self.leader = self.env().caller();
         }
     }
 }
