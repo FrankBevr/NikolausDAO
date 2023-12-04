@@ -3,17 +3,20 @@ const { Keyring } = require('@polkadot/keyring');
 const polkadotContractApi = require("@polkadot/api-contract");
 const { BN, BN_ONE } = require("@polkadot/util");
 const { program } = require("commander");
-const CONTRACT_METADATA = require("../../SmartContract/flipper/target/ink/flipper.json");
+const CONTRACT_METADATA = require("../../SmartContract/NikolausDao/target/ink/nikolaus_dao.json");
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
 
 console.log("NikolausDAO AI Node - Node.JS is running!");
 
-const inferenceApiUrl = "http://127.0.0.1:5000/generate";
+const inferenceApiUrl = "http://127.0.0.1:5000";
 
 /** Used to generate a new 3D model */
 async function generateModel(prompt) {
-    console.log("Calling AI inference server with prompt: " + prompt + " ...");
+    console.log("Calling AI inference server (model) with prompt: " + prompt + " ...");
     const encodedPrompt = encodeURIComponent(prompt);
-    const response = await fetch(`${inferenceApiUrl}?prompt=${encodedPrompt}`, {
+    const response = await fetch(`${inferenceApiUrl}/generate?prompt=${encodedPrompt}`, {
         method: "GET",
     });
     const data = await response.json();
@@ -23,7 +26,59 @@ async function generateModel(prompt) {
     const downloadResponse = await fetch(firstFile);
     const blob = await downloadResponse.blob();
     // Return .obj file content
-    return blob;
+    return await blob.text();
+}
+
+/** Used to generate a new message */
+async function generateMessage(prompt) {
+    console.log("Calling AI inference server (message) with prompt: " + prompt + " ...");
+    const encodedPrompt = encodeURIComponent(prompt);
+    const response = await fetch(`${inferenceApiUrl}/message?prompt=${encodedPrompt}`, {
+        method: "GET",
+    });
+    const data = await response.json();
+    return data.message;
+}
+
+const storageDepositLimit = null;
+
+async function readMembers({
+    gasLimit,
+    contract,
+    user
+}) {
+
+    const { output } = await contract.query.getMembers(
+        user.address,
+        {
+            gasLimit,
+            storageDepositLimit,
+        },
+    );
+
+    const membersArray = output.toPrimitive().ok;
+
+    return membersArray;
+
+}
+
+async function readGifts({
+    gasLimit,
+    contract,
+    user
+}) {
+
+    const { output } = await contract.query.getNodeGifts(
+        user.address,
+        {
+            gasLimit,
+            storageDepositLimit,
+        },
+    );
+
+    const giftsArray = output.toPrimitive().ok;
+
+    return giftsArray;
 }
 
 async function main() {
@@ -31,13 +86,19 @@ async function main() {
     program.requiredOption("-s, --suri <suri>")
         .requiredOption("-c, --contract <contractAddress>")
         .requiredOption("-u, --url <nodeUrl>", "Node URL to connect to", "ws://127.0.0.1:9944")
+        .requiredOption("-d, --directory <directory>", "Model directory", "models")
         .parse();
 
     const opts = program.opts();
 
+    console.log("Directory: " + opts.directory);
     console.log("SURI: " + opts.suri);
     console.log("Contract address: " + opts.contract);
     console.log("Node URL: " + opts.url);
+
+    if(!fs.existsSync(opts.directory)) {
+        fs.mkdirSync(opts.directory);
+    }
 
     console.log("Connecting to node...");
 
@@ -51,37 +112,61 @@ async function main() {
     console.log("Creating keyring ...");
 
     const keyring = new Keyring({ type: 'sr25519' });
-    const alice = keyring.addFromUri(opts.suri);
-    const bob = keyring.addFromUri('//Bob');
+    const user = keyring.addFromUri(opts.suri);
 
     console.log("Keyring created!");
-
-    const gasLimit = api.registry.createType('WeightV2', {
-        regTime: new BN(5_000_000_000_000).isub(BN_ONE),
-        proofSize: new BN(1_000_000)
-    });
-    const storageDepositLimit = null;
 
     const contract = new polkadotContractApi.ContractPromise(api, CONTRACT_METADATA, opts.contract);
 
     console.log("Contract created!");
 
-    console.log("Calling contract ...");
+    const gasLimit = api.registry.createType("WeightV2", {
+        refTime: new BN("10000000000"),
+        proofSize: new BN("10000000000"),
+    });
 
-    // (We perform the send from an account, here using Alice's address)
-    const { gasRequired, result } = await contract.query.get(
-        alice.address,
-        {
-            gasLimit: api.registry.createType("WeightV2", {
-                refTime: new BN("10000000000"),
-                proofSize: new BN("10000000000"),
-            }),
-            storageDepositLimit,
-        },
-    );
+    while (true) {
 
-    console.log(gasRequired.toHuman());
-    console.log(result.toHuman());
+        const members = await readMembers({
+            gasLimit,
+            contract,
+            user
+        });
+        const existingGifts = await readGifts({
+            gasLimit,
+            contract,
+            user
+        });
+        const thisNodeGifts = existingGifts.filter(
+            gift => gift.byNodeAccountId === user.address
+        );
+        const ungiftedMembers = members.filter(
+            member => thisNodeGifts.find(
+                gift => gift.forMemberAccountId === member.accountId
+            ) === undefined
+        );
+
+        if(ungiftedMembers.length === 0) {
+            console.log("No members to gift, waiting 1 seconds...");
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        } else {
+            for(const member of ungiftedMembers) {
+                const model = await generateModel(member.prompt);
+                const message = await generateMessage(member.prompt);
+
+                const tempFileName = new Date().getTime();
+                fs.writeFileSync(
+                    opts.directory + "/" + tempFileName + ".obj",
+                    model
+                );
+                console.log("Generated message: " + message);
+                console.log("Saved .obj file to " + tempFileName);
+            }
+        }
+
+        break;
+
+    }
 
 }
 
