@@ -117,8 +117,8 @@ mod nikolaus_dao {
                 return Err(Error::AlreadyAMember);
             }
 
-            // Check if enough amount was transferred (1000 units)
-            if self.env().transferred_value() < 1000 {
+            // Check if enough amount was transferred (10 units)
+            if self.env().transferred_value() < 10 {
                 return Err(Error::NotEnoughTransferedValue);
             }
 
