@@ -10,4 +10,4 @@ else
 fi
 
 pushd shap-e
-$PYTHON nikolausdao_inference.py
+$PYTHON -m flask --app nikolausdao_inference run --host 0.0.0.0 --port 5000
