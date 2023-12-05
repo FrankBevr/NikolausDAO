@@ -126,7 +126,7 @@
 - [X] ask feedback
 - [X] reiterate wording
 - [X] update thingies
-** Last day [2/3]
+** Last day [3/3]
 *** Frontend [6/6]
 - [X] add error handling
 - [X] make it nicey
@@ -140,10 +140,14 @@
 - [X] add themes
 - [X] rewrite SoftwareDesig
 - [X] make pictures
-*** Diverse [4/6]
+*** Diverse [8/8]
 - [X] Find printlab
 - [X] update readme
 - [X] upload Video
 - [X] recalling and adding org file
-- [ ] prompt org to text for Journey in docs
-- [ ] add timestamps in Video
+- [X] prompt org to text for Journey in docs
+- [X] add timestamps in Video
+- [X] add comments to code
+- [X] update presenation
+*** Presentation [0/1]
+- [ ] go on stage and speak and show
