@@ -5,6 +5,7 @@ mod nikolaus_dao {
     use ink::prelude::string::String;
     use ink::prelude::vec::Vec;
 
+    // A member of the DAO, used as a return type when querying members
     #[derive(scale::Decode, scale::Encode)]
     #[cfg_attr(
         feature = "std",
@@ -16,6 +17,7 @@ mod nikolaus_dao {
         prompt: String,
     }
 
+    // A gift that a member will receive, used as a return type when querying gifts
     #[derive(scale::Decode, scale::Encode, Clone)]
     #[cfg_attr(
         feature = "std",
@@ -28,6 +30,7 @@ mod nikolaus_dao {
         message: String,
     }
 
+    // Custom error types
     #[derive(scale::Encode, scale::Decode, Debug, PartialEq, Eq, Copy, Clone)]
     #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
     pub enum Error {
@@ -69,21 +72,22 @@ mod nikolaus_dao {
 
     #[ink(storage)]
     pub struct NikolausDao {
-        members: Vec<AccountId>,
-        member_delivery_addresses: Vec<String>,
-        member_prompts: Vec<String>,
-        member_deposits: Vec<Balance>,
+        members: Vec<AccountId>, // Holds the account ids of the members
+        member_delivery_addresses: Vec<String>, // Holds the delivery addresses of the members
+        member_prompts: Vec<String>, // Holds the prompts of the members
+        member_deposits: Vec<Balance>, // Holds the deposits of the members
         member_votes: Vec<AccountId>, // Holds the account id of the node that the member voted for
-        member_did_vote: Vec<bool>,
-        member_gifts_to_receive: Vec<Gift>,
-        leader: AccountId,
-        did_init_leader: bool,
-        pending_nodes: Vec<AccountId>,
-        accepted_nodes: Vec<AccountId>,
-        rejected_nodes: Vec<AccountId>,
+        member_did_vote: Vec<bool>, // Holds whether the member has already voted
+        member_gifts_to_receive: Vec<Gift>, // Holds the gifts that the members will receive
+        leader: AccountId, // Holds the account id of the DAO leader
+        did_init_leader: bool, // Holds whether the leader has already been initialized
+        pending_nodes: Vec<AccountId>, // Holds the account ids of the nodes that are pending
+        accepted_nodes: Vec<AccountId>, // Holds the account ids of the nodes that are accepted. Only accepted nodes can push generated gifts.
+        rejected_nodes: Vec<AccountId>, // Holds the account ids of the nodes that are rejected. Rejected nodes cannot push gifts, and cannot register as nodes again.
         generated_gifts: Vec<Gift>,
     }
 
+    // Event emitted when a member is added
     #[ink(event)]
     pub struct MemberAdded {
         member: AccountId,
@@ -110,6 +114,7 @@ mod nikolaus_dao {
             }
         }
 
+        // Register as a member to the DAO
         #[ink(message, payable)]
         pub fn add_member(&mut self, delivery_address: String, prompt: String) -> Result<(), Error> {
             // Check if already a member
@@ -137,6 +142,7 @@ mod nikolaus_dao {
             Ok(())
         }
 
+        // Initialize the DAO leader, should be called exactly once after deploying or resetting the contract
         #[ink(message)]
         pub fn init_leader(&mut self) -> Result<(), Error> {
             if !self.did_init_leader {
@@ -148,6 +154,7 @@ mod nikolaus_dao {
             }
         }
 
+        // Change leadership, can only be called by the current leader
         #[ink(message)]
         pub fn change_leader(&mut self, new_leader: AccountId) -> Result<(), Error> {
             if self.env().caller() == self.leader {
@@ -158,6 +165,7 @@ mod nikolaus_dao {
             }
         }
         
+        // Register as an AI inference node to the DAO
         #[ink(message)]
         pub fn register_node(&mut self) -> Result<(), Error> {
             // Check if caller is already a pending node
@@ -180,6 +188,7 @@ mod nikolaus_dao {
             Ok(())
         }
 
+        // Accept a pending node, can only be called by the leader
         #[ink(message)]
         pub fn accept_node(&mut self, node: AccountId) -> Result<(), Error> {
             if self.env().caller() == self.leader {
@@ -197,6 +206,7 @@ mod nikolaus_dao {
             }
         }
 
+        // Reject a pending node, can only be called by the leader
         #[ink(message)]
         pub fn reject_node(&mut self, node: AccountId) -> Result<(), Error> {
             if self.env().caller() == self.leader {
@@ -214,6 +224,7 @@ mod nikolaus_dao {
             }
         }
 
+        // Push a gift to a member, can only be called by an accepted node
         #[ink(message)]
         pub fn push_node_gift(&mut self, for_member: AccountId, generated_model_cid: String, generated_message: String) -> Result<(), Error> {
             // Check if caller is an accepted node
@@ -243,6 +254,7 @@ mod nikolaus_dao {
             }
         }
         
+        // List the members of the DAO
         #[ink(message)]
         pub fn get_members(&self) -> Vec<Member> {
             let mut members = Vec::new();
@@ -256,31 +268,37 @@ mod nikolaus_dao {
             members
         }
 
+        // Get the current leader of the DAO
         #[ink(message)]
         pub fn get_leader(&self) -> AccountId {
             self.leader
         }
 
+        // Get the pending nodes of the DAO
         #[ink(message)]
         pub fn get_pending_nodes(&self) -> Vec<AccountId> {
             self.pending_nodes.clone()
         }
 
+        // Get the accepted nodes of the DAO
         #[ink(message)]
         pub fn get_accepted_nodes(&self) -> Vec<AccountId> {
             self.accepted_nodes.clone()
         }
 
+        // Get the rejected nodes of the DAO
         #[ink(message)]
         pub fn get_rejected_nodes(&self) -> Vec<AccountId> {
             self.rejected_nodes.clone()
         }
 
+        // Get the generated gifts stored in the DAO
         #[ink(message)]
         pub fn get_node_gifts(&self) -> Vec<Gift> {
             self.generated_gifts.clone()
         }
         
+        // Get the final distrubution of gifts, populated after closing the DAO
         #[ink(message)]
         pub fn get_member_gifts_to_receive(&self) -> Result<Vec<Gift>, Error> {
             // Check if caller is leader
@@ -291,6 +309,7 @@ mod nikolaus_dao {
             Ok(self.member_gifts_to_receive.clone())
         }
 
+        // Get the deposit of the caller
         #[ink(message)]
         pub fn get_deposit(&self) -> Result<Balance, Error> {
             // Check if caller is a member
@@ -302,6 +321,8 @@ mod nikolaus_dao {
             Ok(self.member_deposits[index])
         }
         
+        // Allows a member of the DAO to vote for a gift, that was generated for their prompt
+        // One member can only vote once, and the node that generated the gift receives 30% commision of the deposit
         #[ink(message)]
         pub fn vote_for_gift(&mut self, gift_creator: AccountId) -> Result<(), Error> {
             // Check if caller is a member
@@ -341,6 +362,8 @@ mod nikolaus_dao {
             Ok(())
         }
 
+        // Close the DAO
+        // This will distribute the gifts to the members, send the commision to the winning nodes, and send the rest to the leader for fabrication and shipping
         #[ink(message)]
         pub fn december_6th(&mut self) -> Result<(), Error> {
             if self.env().caller() != self.leader {
@@ -398,6 +421,7 @@ mod nikolaus_dao {
             Ok(())
         }
         
+        // Reset the DAO to its initial state
         #[ink(message)]
         pub fn reset_dao(&mut self) -> Result<(), Error> {
             

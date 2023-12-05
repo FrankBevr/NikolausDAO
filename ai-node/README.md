@@ -20,10 +20,13 @@ _Setup is currently only supported on Linux! Application has only been tested on
 # Running
 
 * In a new terminal, navigate into the `node` directory
-    * Run `npm start`
+    * Run `node index.js --help` to get a list of command line options
+    * Populate command line options with your private key, node address and contract address
+    * Run `node index.js <OPTIONS>` to start the Node.JS backend of the AI inference node
 * In another new terminal, navigate into the `py` directory
     * Run `bash run.sh`
 
 # Registering as a node
 
-!!!TODO!!!
+* Call the `registerNode` method of the Smart Contract
+* DAO leader will be able to either call `acceptNode` or `rejectNode` to accept or reect your registration
