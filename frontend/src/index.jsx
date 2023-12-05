@@ -1,15 +1,22 @@
+/** 
+ * This is the frontend application, deployed to nikolausdao.surge.sh.
+ * It uses React, Bulma, and the Polkadot.JS libraries.
+ * */
+
 import { createRoot } from "react-dom/client";
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ContractPromise } from '@polkadot/api-contract';
-const { BN, BN_ONE } = require("@polkadot/util");
+const { BN } = require("@polkadot/util");
 import { useEffect, useRef, useState } from "react";
 import CONTRACT_METADATA from "./nikolaus_dao.json";
-import keyring from '@polkadot/ui-keyring';
 import { web3Accounts, web3Enable, web3FromAddress } from '@polkadot/extension-dapp';
 
+// The address of the deployed Smart Contract (POC is on Rococo Contracts)
 const CONTRACT_ID = "5CJoTBJGWy2dhc6kEZvzHuo7ZURhPsHDMWnL9RDZ29uzG2AF";
 
+// A single god component, that implements the whole application
 function App() {
+    // Declare state variables
     const [address, setAddress] = useState("");
     const [prompt, setPrompt] = useState("");
     const [ready, setReady] = useState(false);
@@ -20,18 +27,23 @@ function App() {
     const [error, setError] = useState(null);
     const [statusText, setStatusText] = useState(null);
     const [didParticipate, setDidParticipate] = useState(false);
+
+    // Using refs for the Polkadot.JS library stuff
     const wsProviderRef = useRef(null);
     const apiRef = useRef(null);
     const contractRef = useRef(null);
     const gasLimitRef = useRef(null);
 
+    // Displays an error message
     const onError = (e) => {
         console.log(e);
         setError(`${e}`);
         setIsLoadingBecomeMember(false);
     }
 
+    // Called when the user clicks on the "Become a member" button
     const becomeMember = async () => {
+        // Input validation
         if (selectedAddress === null) {
             onError("❌ You must select an account!");
             return;
@@ -52,8 +64,10 @@ function App() {
             return;
         }
 
+        // Start loading
         setIsLoadingBecomeMember(true);
         try {
+            // Smart contract interaction, which sends the prompt and home address of the user to become a member of the DAO
             const injector = await web3FromAddress(selectedAddress);
             await new Promise(
                 (resolve, reject) => {
@@ -93,9 +107,12 @@ function App() {
         }
     };
 
+    // We initialize the Polkadot.JS libraries in this useEffect hook
+    // This makes sure it is only executed exactly once, when the app is loaded
     useEffect(
         () => {
             (async () => {
+                // Initialize the API and the contract
                 const wsProvider = new WsProvider('wss://rococo-contracts-rpc.polkadot.io');
                 const api = await ApiPromise.create({ provider: wsProvider });
                 await api.isReady;
@@ -104,13 +121,17 @@ function App() {
                 apiRef.current = api;
                 contractRef.current = contract;
 
+                // This is stolen from a random GitHub issue, and was adjusted for the Rococo network
                 const gasLimit = api.registry.createType("WeightV2", {
                     refTime: new BN("2000000000"),
                     proofSize: new BN("200000"),
                 });
                 gasLimitRef.current = gasLimit;
 
-                const allInjected = await web3Enable('Nikolaus DAO');
+                // Show authorization popup
+                await web3Enable('Nikolaus DAO');
+
+                // Get all accounts
                 const allAccounts = await web3Accounts();
                 setAccounts(allAccounts);
 
@@ -194,5 +215,6 @@ function App() {
     </section >;
 }
 
+// Render the app
 const appContainer = document.getElementById("app");
 createRoot(appContainer).render(<App />);
