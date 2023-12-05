@@ -1,3 +1,7 @@
+# This app is the POC AI Inference server
+# It uses open-source models to generate 3D models, and personalized messages for the gifts
+# We use OpenAI Shap-E to generate 3D models, and Facebook OPT-1.3b to generate messages
+
 import torch
 from flask import Flask, request, jsonify, send_from_directory
 
@@ -11,6 +15,7 @@ from transformers import pipeline, set_seed
 import datetime
 import os
 
+# AI inference magic constants, API settings
 batch_size = 1
 guidance_scale = 15.0
 inference_steps = 64
@@ -20,6 +25,8 @@ if torch.cuda.is_available():
     print("Using CUDA")
 else:
     print("WARNING: Using CPU")
+
+# Load AI models
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -41,9 +48,10 @@ print("Loaded text generator")
 if not os.path.exists("output"):
     os.makedirs("output")
 
-
+# Create API server
 api_app = Flask(__name__)
 
+# This is the few-shot prompt for generating the personalized messages
 text_generator_context = """Below are ideas, and heart warming, nice, festive messages generates for the ideas.
 
 Idea: a cow
@@ -55,6 +63,7 @@ Message: Come Nikolaus day, and this dog will make your day!
 Idea: """
 
 
+# This endpoint uses an LLM to generate a personalized message for the gift, using few-shot learning
 @api_app.get("/message")
 def message():
     prompt = ""
@@ -86,6 +95,7 @@ def message():
     return jsonify(json_response)
 
 
+# This endpoint uses Shape-E to generate 3D models for the gifts
 @api_app.get("/generate")
 def generate():
     prompt = ""
@@ -137,6 +147,7 @@ def generate():
     return jsonify(json_response)
 
 
+# This endpoint allows downloading the generated 3D models
 @api_app.get("/download/<path:path>")
 def send_ply(path):
     abs_path = os.path.abspath(f"output")
