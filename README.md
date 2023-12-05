@@ -12,6 +12,8 @@
     ·
     <a href="https://youtu.be/jPC3Mbeg1cg">Youtube</a>
     ·
+    <a href="http://docs.nikolausdao.surge.sh/proposal.html">Proposal</a>
+    ·
     <a href="https://github.com/FrankBevr/NikolausDao">Code</a>
   </p>
 </div>
