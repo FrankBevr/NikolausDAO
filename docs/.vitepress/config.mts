@@ -17,7 +17,8 @@ export default defineConfig({
           { text: 'Software-Design', link: '/Software-Design' },
           { text: 'Proposal', link: '/proposal' },
           { text: 'Judging-Criteria', link: '/Judging-Criteria' },
-          { text: 'Members', link: '/members' }
+          { text: 'Members', link: '/members' },
+          { text: 'Gift List', link: '/GiftList-Rococo' }
         ]
       }
     ],
