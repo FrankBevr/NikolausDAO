@@ -82,6 +82,16 @@ async function readGifts({
     return giftsArray;
 }
 
+function randomId() {
+    const length = 24;
+    const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
 async function main() {
 
     program.requiredOption("-s, --suri <suri>")
@@ -160,7 +170,7 @@ async function main() {
                 const model = await generateModel(member.prompt);
                 const message = await generateMessage(member.prompt);
 
-                const tempFileName = new Date().getTime();
+                const tempFileName = randomId();
                 fs.writeFileSync(
                     opts.directory + "/" + tempFileName + ".obj",
                     model
