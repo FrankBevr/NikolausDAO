@@ -8,7 +8,9 @@
     .
     <a href="https://nikolausdao.surge.sh">Live</a>
     ·
-    <a href="">Youtube</a>
+    <a href="https://presentation.nikolausdao.surge.sh">Presentation</a>
+    ·
+    <a href="https://youtu.be/jPC3Mbeg1cg">Youtube</a>
     ·
     <a href="https://github.com/FrankBevr/NikolausDao">Code</a>
   </p>
@@ -16,15 +18,26 @@
 
 ### Screenshot
 
-w.i.p.
+<img src="https://gcdnb.pbrd.co/images/N7BwPHZXJOmC.png?o=1" height=500/>
 
 ### Summary
 
-w.i.p.
+- [Presentation Link](https://presentation.nikolausdao.surge.sh)  
+- [Documentation Link](https://presentation.nikolausdao.surge.sh)  
+- [Youtube Link - Walkthruh](https://youtu.be/jPC3Mbeg1cg)  
 
-### Quickstart
+### QuickLook
 
-w.i.p
+see Contract
+- `cat ./SmartContract/NikolausDao/lib.rs`
+
+see Frontend
+- `cat ./frontend/src/index.jsx`
+
+see AiNode
+- `cat ./ai-node/py/nikolausdao_inference.py`
+- `cat ./ai-node/node/index.js`
+
 
 ### Team
 
