@@ -1,18 +1,20 @@
 {
   "name": "docs",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Documentation",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:preview": "vitepress preview",
+    "pres:dev": "slidev ./presentation/slides.md",
+    "pres:build": "slidev build ./presentation/slides.md"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Botond and Frank",
   "devDependencies": {
     "vitepress": "^1.0.0-rc.31"
+  },
+  "dependencies": {
+    "@slidev/cli": "^0.45.0",
+    "@slidev/theme-apple-basic": "^0.20.0"
   }
 }
