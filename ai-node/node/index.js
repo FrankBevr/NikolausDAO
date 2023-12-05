@@ -129,6 +129,8 @@ async function main() {
         proofSize: new BN("200000"),
     });
 
+    const membersGiftedInThisProcess = [];
+
     while (true) {
 
         const members = await readMembers({
@@ -147,7 +149,7 @@ async function main() {
         const ungiftedMembers = members.filter(
             member => thisNodeGifts.find(
                 gift => gift.forMemberAccountId === member.accountId
-            ) === undefined
+            ) === undefined && membersGiftedInThisProcess.indexOf(member.accountId) === -1
         );
 
         if (ungiftedMembers.length === 0) {
@@ -184,6 +186,8 @@ async function main() {
                     storageUrl,
                     message
                 ).signAndSend(user);
+
+                membersGiftedInThisProcess.push(member.accountId);
             }
         }
 
