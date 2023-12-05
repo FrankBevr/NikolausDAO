@@ -99,3 +99,51 @@
 - [X] add push_gifts
 - [X] debug correctly
 - [X] test via contracts ui
+
+** Second part [4/4]
+*** Finalize contract (Butand) [5/5]
+- [X] rm structs
+- [X] update layout in array
+- [X] addd voting
+- [X] add dao closing
+- [X] add error handling
+*** Integrate ai node with Smart Contract (Butand) [5/5]
+- [X] add read jobs
+- [X] add delegation to pyhton
+- [X] play with ipfs
+- [X] add cloudstorage
+- [X] add push of results
+*** Frontend (Butand) [2/2]
+- [X] add member_register
+- [X] debug member_register
+*** Diverse (Frank) [9/9]
+- [X] walk around collect 5 addresses and 5 prompts
+- [X] add read function to Backend
+- [X] add docs
+- [X] deploy docs
+- [X] deploy frontend
+- [X] write proposal
+- [X] ask feedback
+- [X] reiterate wording
+- [X] update thingies
+** Last day [2/3]
+*** Frontend [6/6]
+- [X] add error handling
+- [X] make it nicey
+- [X] add pay_amount()
+- [X] test round 1 2 3
+- [X] sketch up script for video
+- [X] make video
+*** Make presentation
+- [X] add slidev
+- [X] write slides
+- [X] add themes
+- [X] rewrite SoftwareDesig
+- [X] make pictures
+*** Diverse [4/6]
+- [X] Find printlab
+- [X] update readme
+- [X] upload Video
+- [X] recalling and adding org file
+- [ ] prompt org to text for Journey in docs
+- [ ] add timestamps in Video
